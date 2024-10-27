@@ -1,7 +1,19 @@
 import typer
 
+from storage import create_table, get_table
+
 
 app = typer.Typer()
+
+
+@app.command()
+def create_table_test(table_name: str):
+    create_table(table_name)
+
+
+@app.command()
+def get_table_test(table_name: str):
+    get_table(table_name)
 
 
 @app.command()
@@ -39,5 +51,5 @@ def monthly():
     print("Monthly stats")
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app()
