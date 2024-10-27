@@ -1,54 +1,43 @@
 import typer
-
-from storage import create_table, get_table
-
+import storage as st
 
 app = typer.Typer()
 
 
 @app.command()
-def create_table_test(table_name: str):
-    create_table(table_name)
+def income(amount: float, description: str):
+    st.add_event(amount, description)
 
 
 @app.command()
-def get_table_test(table_name: str):
-    get_table(table_name)
-
-
-@app.command()
-def init(name: str, value: float):
-    print(f"Initializing a new account for {name} with a value of {value}")
-
-
-@app.command()
-def income(amount: float):
-    print(f"Your income is {amount}")
-
-
-@app.command()
-def expenses(amount: float):
-    print(f"Your expenses are {amount}")
+def expenses(amount: float, description: str):
+    st.add_event(-amount, description)
 
 
 @app.command()
 def balance():
-    print("Your balance is 1000")
+    print(st.get_balance())
 
 
 @app.command()
-def recent():
-    print("Recent operations")
+def log():
+    data = st.get_events()
+    print()
+    for event in data:
+        print(f"time: {event['Time']}")
+        print(f"value: {event['Value']}")
+        print(f"description: {event['Description']}")
+        print()
 
 
-@app.command()
-def weekly():
-    print("Weekly stats")
-
-
-@app.command()
-def monthly():
-    print("Monthly stats")
+# @app.command()
+# def weekly():
+#     print("Weekly stats")
+#
+#
+# @app.command()
+# def monthly():
+#     print("Monthly stats")
 
 
 if __name__ == '__main__':

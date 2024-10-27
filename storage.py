@@ -1,7 +1,7 @@
 from azure.data.tables import TableServiceClient
 import os
 from dotenv import load_dotenv
-
+from time import gmtime, strftime
 
 load_dotenv()
 CONNECTION_STRING = os.getenv('STORAGE_CONNECTION_STRING')
@@ -11,13 +11,30 @@ def get_table_client():
     return TableServiceClient.from_connection_string(conn_str=CONNECTION_STRING)
 
 
-def create_table(table_name: str):
+def add_event(value: float, description: str):
     with get_table_client() as client:
-        table = client.create_table(table_name)
-        return table
+        table = client.get_table_client('events')
+        entity = {
+            'PartitionKey': 'wallet',
+            'RowKey': strftime("%Y%m%d%H%M%S", gmtime()),
+            'Value': value,
+            'Description': description
+        }
+        table.create_entity(entity=entity)
 
 
-def get_table(table_name: str):
+def get_events():
     with get_table_client() as client:
-        table = client.get_table_client(table_name)
-        return table
+        table = client.get_table_client('events')
+        events = table.query_entities("PartitionKey eq 'wallet'")
+        data = [{'Value': e['Value'], 'Time': e['RowKey'], 'Description': e['Description']} for e in events]
+        data.sort(key=lambda x: x['Time'], reverse=True)
+        return data
+
+
+def get_balance():
+    with get_table_client() as client:
+        table = client.get_table_client('events')
+        events = table.query_entities("PartitionKey eq 'wallet'")
+        balance = sum([e['Value'] for e in events])
+        return balance
