@@ -49,5 +49,11 @@ def balance():
 #     print("Monthly stats")
 
 
+def create_table_if_not_exists():
+    if not st.table_exists():
+        st.create_table()
+
+
 if __name__ == '__main__':
+    create_table_if_not_exists()
     app()
