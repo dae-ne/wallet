@@ -7,7 +7,7 @@ app = typer.Typer()
 
 @app.command()
 def income(
-        amount: Annotated[float, typer.Option('--amount', '-a', help="Amount of the income.")],
+        amount: Annotated[float, typer.Argument(help="Amount of the income.")],
         description: Annotated[str, typer.Option('--description', '-d', help="Description of the income.")]
 ):
     st.add_event(amount, description)
@@ -15,7 +15,7 @@ def income(
 
 @app.command()
 def expense(
-        amount: Annotated[float, typer.Option('--amount', '-a', help="Amount of the expense.")],
+        amount: Annotated[float, typer.Argument(help="Amount of the expense.")],
         description: Annotated[str, typer.Option('--description', '-d', help="Description of the expense.")]
 ):
     st.add_event(-amount, description)
@@ -28,7 +28,7 @@ def log(
     data = st.get_events(number)
     print()
     for event in data:
-        print(f"time: {event['Time']}")
+        print(f"id: {event['Time']}")
         print(f"value: {event['Value']}")
         print(f"description: {event['Description']}")
         print()
