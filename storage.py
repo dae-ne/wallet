@@ -1,6 +1,7 @@
 from azure.data.tables import TableServiceClient
-import os
+from datetime import datetime
 from dotenv import load_dotenv
+import os
 from time import gmtime, strftime
 
 load_dotenv()
@@ -24,12 +25,13 @@ def create_table():
         return table
 
 
-def add_event(value: float, description: str):
+def add_event(value: float, description: str, date: datetime):
     with get_table_client() as client:
         table = client.get_table_client(TABLE_NAME)
+        id = date.strftime("%Y%m%d%H%M%S") if date else strftime("%Y%m%d%H%M%S", gmtime())
         entity = {
             'PartitionKey': 'wallet',
-            'RowKey': strftime("%Y%m%d%H%M%S", gmtime()),
+            'RowKey': id,
             'Value': value,
             'Description': description
         }

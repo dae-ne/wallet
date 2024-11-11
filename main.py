@@ -1,3 +1,4 @@
+import datetime
 import typer
 import storage as st
 from typing_extensions import Annotated
@@ -5,20 +6,30 @@ from typing_extensions import Annotated
 app = typer.Typer()
 
 
+def get_date_from_string(date_str: str):
+    return datetime.datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S')
+
+
 @app.command()
 def income(
         amount: Annotated[float, typer.Argument(help="Amount of the income.")],
-        description: Annotated[str, typer.Option('--description', '-d', help="Description of the income.")]
+        description: Annotated[str, typer.Option('--message', '-m', help="Description of the income.")],
+        date_str: Annotated[
+            str, typer.Option('--date', '-d', help="Date of the income. Format: %Y-%m-%d %H:%M:%S")] = ''
 ):
-    st.add_event(amount, description)
+    date = get_date_from_string(date_str) if date_str else datetime.datetime.now()
+    st.add_event(amount, description, date)
 
 
 @app.command()
 def expense(
         amount: Annotated[float, typer.Argument(help="Amount of the expense.")],
-        description: Annotated[str, typer.Option('--description', '-d', help="Description of the expense.")]
+        description: Annotated[str, typer.Option('--message', '-m', help="Description of the expense.")],
+        date_str: Annotated[
+            str, typer.Option('--date', '-d', help="Date of the expense. Format: %Y-%m-%d %H:%M:%S")] = ''
 ):
-    st.add_event(-amount, description)
+    date = get_date_from_string(date_str) if date_str else datetime.datetime.now()
+    st.add_event(-amount, description, date)
 
 
 @app.command()
