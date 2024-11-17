@@ -2,6 +2,7 @@ import datetime
 import typer
 from typing_extensions import Annotated
 
+from ._config import INPUT_DATE_FORMAT
 import wallet.storage as st
 
 app = typer.Typer()
@@ -16,7 +17,7 @@ def income(
         amount: Annotated[float, typer.Argument(help="Amount of the income.")],
         description: Annotated[str, typer.Option('--message', '-m', help="Description of the income.")],
         date_str: Annotated[
-            str, typer.Option('--date', '-d', help="Date of the income. Format: %Y-%m-%d %H:%M:%S")] = ''
+            str, typer.Option('--date', '-d', help=f"Date of the income. Format: {INPUT_DATE_FORMAT}")] = ''
 ):
     date = _get_date_from_string(date_str) if date_str else datetime.datetime.now()
     st.add_event(amount, description, date)
@@ -27,7 +28,7 @@ def expense(
         amount: Annotated[float, typer.Argument(help="Amount of the expense.")],
         description: Annotated[str, typer.Option('--message', '-m', help="Description of the expense.")],
         date_str: Annotated[
-            str, typer.Option('--date', '-d', help="Date of the expense. Format: %Y-%m-%d %H:%M:%S")] = ''
+            str, typer.Option('--date', '-d', help=f"Date of the expense. Format: {INPUT_DATE_FORMAT}")] = ''
 ):
     date = _get_date_from_string(date_str) if date_str else datetime.datetime.now()
     st.add_event(-amount, description, date)
@@ -52,4 +53,4 @@ def balance():
 
 
 def _get_date_from_string(date_str: str):
-    return datetime.datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S')
+    return datetime.datetime.strptime(date_str, INPUT_DATE_FORMAT)

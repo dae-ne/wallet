@@ -2,9 +2,8 @@ from azure.data.tables import TableServiceClient
 from datetime import datetime
 from time import gmtime, strftime
 
-from ._config import STORAGE_CONNECTION_STRING
+from ._config import STORAGE_CONNECTION_STRING, STORAGE_DATE_FORMAT
 
-ID_DATE_FORMAT = '%Y%m%d%H%M%S'
 TABLE_NAME = 'events'
 
 
@@ -26,7 +25,7 @@ def create_table():
 def add_event(value: float, description: str, date: datetime):
     with get_table_client() as client:
         table = client.get_table_client(TABLE_NAME)
-        id = date.strftime(ID_DATE_FORMAT) if date else strftime(ID_DATE_FORMAT, gmtime())
+        id = date.strftime(STORAGE_DATE_FORMAT) if date else strftime(STORAGE_DATE_FORMAT, gmtime())
         entity = {
             'PartitionKey': 'wallet',
             'RowKey': id,
