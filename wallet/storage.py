@@ -38,10 +38,10 @@ def add_event(value: float, description: str, date: datetime):
 def get_events(number: int):
     with get_table_client() as client:
         table = client.get_table_client(TABLE_NAME)
-        events = table.query_entities("PartitionKey eq 'wallet'")
+        events = table.query_entities("PartitionKey eq 'wallet'", select=['Value', 'RowKey', 'Description'])
         data = [{'Value': e['Value'], 'Time': e['RowKey'], 'Description': e['Description']} for e in events]
         data.sort(key=lambda x: x['Time'], reverse=True)
-        return data[:number]  # TODO: check if it can be done in the query
+        return data[:number]
 
 
 def get_balance():
