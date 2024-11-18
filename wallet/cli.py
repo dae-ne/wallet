@@ -36,7 +36,7 @@ def expense(
 
 @app.command()
 def log(
-        number: Annotated[int, typer.Option('--number', '-n', help="Limit the number of events to output.")] = 10
+        number: Annotated[int, typer.Option('--number', '-n', help="Limit the number of events to output.")] = 5
 ):
     data = st.get_events(number)
     print()
