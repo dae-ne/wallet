@@ -8,8 +8,8 @@ import wallet.storage as st
 app = typer.Typer()
 
 
-def run_app():
-    app()
+def run_app(*args, **kwargs):
+    app(*args, **kwargs)
 
 
 @app.command()

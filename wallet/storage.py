@@ -62,4 +62,8 @@ def get_balance():
 
 
 def _get_domain_event_object(entity: TableEntity):
-    return {'Value': entity['Value'], 'Time': entity['RowKey'], 'Description': entity['Description']}
+    return {
+        'Value': entity['Value'],
+        'Time': entity['RowKey'],
+        'Description': entity['Description']
+    }
