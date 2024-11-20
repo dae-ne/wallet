@@ -20,7 +20,10 @@ def income(
             str, typer.Option('--date', '-d', help=f"Date of the income. Format: {INPUT_DATE_FORMAT}")] = ''
 ):
     date = _get_date_from_string(date_str) if date_str else datetime.datetime.now()
-    st.add_event(amount, description, date)
+    key = st.add_event(amount, description, date)
+    new_event = st.get_event(key)
+    print()
+    _print_event(new_event)
 
 
 @app.command()
@@ -31,7 +34,10 @@ def expense(
             str, typer.Option('--date', '-d', help=f"Date of the expense. Format: {INPUT_DATE_FORMAT}")] = ''
 ):
     date = _get_date_from_string(date_str) if date_str else datetime.datetime.now()
-    st.add_event(-amount, description, date)
+    key = st.add_event(-amount, description, date)
+    new_event = st.get_event(key)
+    print()
+    _print_event(new_event)
 
 
 @app.command()
@@ -41,15 +47,19 @@ def log(
     data = st.get_events(number)
     print()
     for event in data:
-        print(f"id: {event['Time']}")
-        print(f"value: {event['Value']}")
-        print(f"description: {event['Description']}")
-        print()
+        _print_event(event)
 
 
 @app.command()
 def balance():
     print(st.get_balance())
+
+
+def _print_event(event):
+    print(f"id: {event['Time']}")
+    print(f"value: {event['Value']}")
+    print(f"description: {event['Description']}")
+    print()
 
 
 def _get_date_from_string(date_str: str):
