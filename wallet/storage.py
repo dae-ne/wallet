@@ -1,11 +1,13 @@
 from azure.data.tables import TableEntity, TableServiceClient
 from datetime import datetime
+import uuid
 from time import gmtime, strftime
 
 from ._config import STORAGE_CONNECTION_STRING, STORAGE_DATE_FORMAT
 
 TABLE_NAME = 'events'
 SELECT_PROPERTIES = ['Value', 'RowKey', 'Description']
+ID_SEPARATOR = '_'
 
 
 def get_table_client():
@@ -27,6 +29,7 @@ def add_event(value: float, description: str, date: datetime):
     with get_table_client() as client:
         table = client.get_table_client(TABLE_NAME)
         key = date.strftime(STORAGE_DATE_FORMAT) if date else strftime(STORAGE_DATE_FORMAT, gmtime())
+        key = f'{key}{ID_SEPARATOR}{str(uuid.uuid4()).replace('-', '')}'
         entity = {
             'PartitionKey': 'wallet',
             'RowKey': key,
