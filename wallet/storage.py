@@ -53,6 +53,12 @@ def get_event(key: str):
         return _get_domain_event_object(event)
 
 
+def delete_event(key: str):
+    with get_table_client() as client:
+        table = client.get_table_client(TABLE_NAME)
+        table.delete_entity(partition_key='wallet', row_key=key)
+
+
 def get_balance():
     with get_table_client() as client:
         table = client.get_table_client(TABLE_NAME)

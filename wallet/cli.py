@@ -41,6 +41,14 @@ def expense(
 
 
 @app.command()
+def delete(
+        event_id: Annotated[str, typer.Argument(help="ID of the event to delete.")]
+):
+    st.delete_event(event_id)
+    print(f"Event with ID {event_id} was deleted.")
+
+
+@app.command()
 def log(
         number: Annotated[int, typer.Option('--number', '-n', help="Limit the number of events to output.")] = 5
 ):
