@@ -1,6 +1,6 @@
-from dotenv import load_dotenv
 import sys
 import os
+from dotenv import load_dotenv
 
 APP_NAME = 'wallet'
 

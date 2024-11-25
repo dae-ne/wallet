@@ -2,8 +2,8 @@ import datetime
 import typer
 from typing_extensions import Annotated
 
-from ._config import INPUT_DATE_FORMAT
 import wallet.storage as st
+from ._config import INPUT_DATE_FORMAT
 
 app = typer.Typer()
 

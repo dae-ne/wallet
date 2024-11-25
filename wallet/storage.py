@@ -1,7 +1,7 @@
-from azure.data.tables import TableEntity, TableServiceClient
 from datetime import datetime
 import uuid
 from time import gmtime, strftime
+from azure.data.tables import TableEntity, TableServiceClient
 
 from ._config import STORAGE_CONNECTION_STRING, STORAGE_DATE_FORMAT
 
